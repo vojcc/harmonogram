@@ -1,26 +1,13 @@
-<script setup>
-import {computed} from 'vue'
-import {useUserSettingsStore} from '@/stores/UserSettingsStore.js'
-
-const userSettingsStore = useUserSettingsStore()
-
-const group = computed(() =>
-  userSettingsStore.getGroup() ? `Grupa ${userSettingsStore.getGroup()}` : '',
-)
-</script>
-
 <template>
-  <nav class="bg-gray-100">
-    <div class="flex flex-wrap-reverse gap-4 items-center justify-between px-4 py-3 sm:py-4">
-      <div class="flex items-center gap-3">
-        <img src="../../assets/uew-logo.png" alt="" class="size-7"/>
-        <h1 class="w-fit text-lg sm:text-xl font-bold text-gray-800">Plan zajęć</h1>
-      </div>
+  <nav class="bg-gray-100 px-4 py-3">
+    <div class="flex gap-3">
+      <img src="../../assets/uew-logo.png" alt="" class="size-12" />
 
-      <div class="flex flex-col items-end">
-        <p class="text-[10px] sm:text-xs font-medium text-nowrap text-gray-800">Informatyka w biznesie</p>
-        <p class="text-[10px] sm:text-xs text-gray-500 text-nowrap">{{ group }}&nbsp;</p>
+      <div class="flex flex-col">
+        <h1 class="w-fit text-lg font-bold text-gray-800">Harmonogram zajęć</h1>
+        <h2 class="text-xs text-gray-500">Uniwersytetu Ekonomicznego we Wrocławiu</h2>
       </div>
     </div>
   </nav>
 </template>
+<script setup lang="ts"></script>

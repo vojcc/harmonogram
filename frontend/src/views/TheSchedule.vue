@@ -1,29 +1,20 @@
 <script setup>
 import { onMounted, onUpdated, ref } from 'vue'
-import { useUserSettingsStore } from '@/stores/UserSettingsStore.js'
 import { groups } from '../../../backend/schedule.json'
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from '@heroicons/vue/24/outline/index.js'
-import { onClickOutside } from '@vueuse/core'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline/index.js'
+import { onClickOutside, useStorage } from '@vueuse/core'
 import NoLessons from '@/components/UI/empty_states/NoLessons.vue'
 import SetSettings from '@/components/UI/empty_states/SetSettings.vue'
 import LessonScheduleCard from '@/components/UI/LessonScheduleCard.vue'
 
-const group = ref('')
+const group = useStorage('group', null)
 const selectedDay = ref('')
 const showGroupList = ref(false)
-const userSettingsStore = useUserSettingsStore()
 const groupList = ref(null)
 const buttonRefs = ref({})
 const scrollContainer = ref(null)
 
 onMounted(() => {
-  if (userSettingsStore.getGroup()) {
-    group.value = userSettingsStore.getGroup()
-  }
-
   if (group.value) {
     refreshSelectedGroupDays()
   }
@@ -40,12 +31,9 @@ onUpdated(() => {
 })
 
 function selectGroup(groupName) {
-  toggleShowGroupList()
-
   group.value = groupName
-  userSettingsStore.setGroup(groupName)
-
   refreshSelectedGroupDays()
+  toggleShowGroupList()
 }
 
 function selectDay(day) {
@@ -74,9 +62,8 @@ function refreshSelectedGroupDays() {
     })
     .sort((a, b) => a.parsedDate - b.parsedDate)
 
-  selectedDay.value = closest.length > 0
-    ? closest[0]
-    : selectedGroupDays.value[selectedGroupDays.value.length - 1]
+  selectedDay.value =
+    closest.length > 0 ? closest[0] : selectedGroupDays.value[selectedGroupDays.value.length - 1]
 }
 
 function setButtonRef(date, element) {
@@ -139,7 +126,10 @@ onClickOutside(groupList, () => {
 
       <section>
         <div v-if="selectedGroupDays.length">
-          <div class="flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-6 mb-2" ref="scrollContainer">
+          <div
+            class="flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-6 mb-2"
+            ref="scrollContainer"
+          >
             <button
               @click="selectDay(day)"
               class="px-3 py-1.5 mb-4 text-sm border rounded-lg shadow"
@@ -154,13 +144,17 @@ onClickOutside(groupList, () => {
             >
               <span class="flex flex-col justify-center items-center">
                 <span class="font-medium whitespace-nowrap">{{
-                    new Date(day.date).toLocaleDateString('pl-PL', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    })
+                  new Date(day.date).toLocaleDateString('pl-PL', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })
                 }}</span>
-                <small :class="selectedDay && selectedDay.date === day.date ? 'text-white' : 'text-gray-400'">
+                <small
+                  :class="
+                    selectedDay && selectedDay.date === day.date ? 'text-white' : 'text-gray-400'
+                  "
+                >
                   {{ day.name }}
                 </small>
               </span>
