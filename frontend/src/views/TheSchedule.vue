@@ -88,12 +88,13 @@ onClickOutside(groupList, () => {
         <div class="w-full">
           <form class="flex flex-col gap-6">
             <div>
-              <label class="block text-sm font-bold text-gray-900">Grupa</label>
+              <label class="block text-sm font-bold text-gray-900 mb-0.5">Grupa</label>
               <div ref="groupList" class="relative">
                 <button
-                  @click="toggleShowGroupList()"
+                  @click="toggleShowGroupList"
                   type="button"
-                  class="flex items-center shadow relative min-h-12 w-full lg:w-1/4 rounded-lg p-3 text-left text-gray-800 ring-1 ring-gray-200 ring-inset active:outline-none active:ring-uewblue focus:outline-none focus:ring-uewblue"
+                  :class="showGroupList ? 'ring-uewblue ring-2' : 'ring-gray-200 ring-1'"
+                  class="flex items-center shadow relative min-h-12 w-full lg:w-1/4 rounded-lg p-3 text-left text-gray-800 ring-inset"
                 >
                   <span class="text-sm">{{ group }}</span>
                   <span
@@ -104,20 +105,26 @@ onClickOutside(groupList, () => {
                   </span>
                 </button>
 
-                <ul
-                  v-if="showGroupList"
-                  class="absolute z-10 mt-1 max-h-60 w-full lg:w-1/4 overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none text-sm"
-                >
-                  <li
-                    @click="selectGroup(groupToSelect.name)"
-                    v-for="groupToSelect in groups"
-                    :key="groupToSelect.name"
-                    class="relative select-none py-2 pl-3 pr-9 text-gray-900 cursor-pointer"
-                    :class="groupToSelect.name === group ? 'bg-gray-100' : 'hover:bg-gray-50'"
+                <transition name="slide-down">
+                  <ul
+                    v-if="showGroupList"
+                    class="absolute z-10 mt-1 max-h-60 w-full lg:w-1/4 overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none text-sm"
                   >
-                    {{ groupToSelect.name }}
-                  </li>
-                </ul>
+                    <li
+                      @click="selectGroup(groupToSelect.name)"
+                      v-for="groupToSelect in groups"
+                      :key="groupToSelect.name"
+                      class="relative select-none py-2 pl-3 pr-9 text-gray-900 cursor-pointer"
+                      :class="
+                        groupToSelect.name === group
+                          ? 'bg-gray-100 font-medium'
+                          : 'hover:bg-gray-50'
+                      "
+                    >
+                      {{ groupToSelect.name }}
+                    </li>
+                  </ul>
+                </transition>
               </div>
             </div>
           </form>
@@ -179,3 +186,33 @@ onClickOutside(groupList, () => {
     </div>
   </main>
 </template>
+
+<style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.slide-down-enter-from {
+  max-height: 0;
+  opacity: 0;
+}
+
+.slide-down-enter-to {
+  max-height: 15rem;
+  opacity: 1;
+}
+
+.slide-down-leave-from {
+  max-height: 15rem;
+  opacity: 1;
+}
+
+.slide-down-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+</style>
