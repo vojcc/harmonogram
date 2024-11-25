@@ -108,7 +108,7 @@ onClickOutside(groupList, () => {
                 <transition name="slide-down">
                   <ul
                     v-if="showGroupList"
-                    class="absolute z-10 mt-1 max-h-60 w-full lg:w-1/4 overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none text-sm"
+                    class="absolute z-10 mt-1 max-h-72 w-full lg:w-1/4 overflow-auto rounded-lg bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none text-sm"
                   >
                     <li
                       @click="selectGroup(groupToSelect.name)"
