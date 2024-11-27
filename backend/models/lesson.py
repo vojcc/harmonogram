@@ -8,7 +8,7 @@ class Lesson:
         self.duration = duration
         self.color = color
 
-    def to_dictionary(self):
+    def to_dictionary(self) -> dict:
         return {
             'name': self.name,
             'name_abbr': self.name_abbr,

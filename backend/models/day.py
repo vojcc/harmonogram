@@ -6,10 +6,10 @@ class Day:
         self.name = name
         self.lessons = []
 
-    def add_lesson(self, lesson: Lesson):
+    def add_lesson(self, lesson: Lesson) -> None:
         self.lessons.append(lesson)
 
-    def to_dictionary(self):
+    def to_dictionary(self) -> dict:
         return {
             'date': self.date,
             'name': self.name,
